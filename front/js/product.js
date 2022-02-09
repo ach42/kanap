@@ -22,7 +22,7 @@ function displayProduct(article){
         descriptionElt.textContent = article.description;
         // image
         let imageElt = document.createElement("img");
-        document.querySelector(".item__img").appendChild(imageElt); // append child lie create element et query selector
+        document.querySelector(".item__img").appendChild(imageElt);
         imageElt.src = article.imageUrl;
         imageElt.alt = article.altTxt;
         // titre de la page
@@ -38,17 +38,27 @@ function displayProduct(article){
 }
 
 
-const quantity = document.querySelector("#quantity");
-const color = document.querySelector("#colors");
+const quantity = document.getElementById('quantity');
+const color = document.getElementById('colors');
 
 function addProduct(article) {
+    // Bouton
     const btn = document.querySelector("#addToCart");
-    btn.addEventListener("click", () =>{
-        const product = {
-            name: article.name,
-            
-
+        btn.addEventListener("click", () =>{
+        if (quantity.value > 0 && quantity.value <=100 && quantity.value != 0){
+            const product = {
+                id: article._id,
+                color : color.value,
+                quantity : quantity.value,
+            }
+        // Local Storage
+        let createLocalStorage = JSON.parse(localStorage.getItem("product"));
+            createLocalStorage =[];
+            createLocalStorage.push(product);
+            localStorage.setItem("product", JSON.stringify(createLocalStorage));
+            console.table(createLocalStorage);
         }
     })
 }
+
 
