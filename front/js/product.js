@@ -45,20 +45,43 @@ function addProduct(article) {
     // Bouton
     const btn = document.querySelector("#addToCart");
         btn.addEventListener("click", () =>{
+        // Empêcher l'envoie à 0
         if (quantity.value > 0 && quantity.value <=100 && quantity.value != 0){
+
             const product = {
                 id: article._id,
                 color : color.value,
                 quantity : quantity.value,
             }
+
         // Local Storage
-        let createLocalStorage = JSON.parse(localStorage.getItem("product"));
-            createLocalStorage =[];
-            createLocalStorage.push(product);
-            localStorage.setItem("product", JSON.stringify(createLocalStorage));
-            console.table(createLocalStorage);
+        let addToCart = JSON.parse(localStorage.getItem("product"));
+            if (addToCart) {
+                
+            // Find id + color
+            const localStorageFind = addToCart.find((el) => el.id === article._id && el.color === color.value);
+                // Quantité addition local storage + input DOM
+                if (localStorageFind) {
+                    let newQuantity =
+                    parseInt(product.quantity) + parseInt(localStorageFind.quantity);
+                    localStorageFind.quantity = newQuantity;
+                    localStorage.setItem("product", JSON.stringify(addToCart));
+                } else {
+                    addToCart.push(product);
+                    localStorage.setItem("product", JSON.stringify(addToCart));
+                }
+
+            }
+            else {
+            // Local Storage vide
+            addToCart =[];
+            addToCart.push(product);
+            localStorage.setItem("product", JSON.stringify(addToCart));
+            console.table(addToCart);
+            }
         }
-    })
+    });
 }
+
 
 
