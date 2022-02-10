@@ -34,54 +34,35 @@ function displayProduct(article){
           colorCouch.value = color;
           colorCouch.textContent = color;
           colorsElt.appendChild(colorCouch);
-      }
+        }
 }
 
 
-const quantity = document.getElementById('quantity');
-const color = document.getElementById('colors');
+const quantityElt = document.getElementById('quantity');
+const colorElt = document.getElementById('colors');
 
 function addProduct(article) {
-    // Bouton
     const btn = document.querySelector("#addToCart");
-        btn.addEventListener("click", () =>{
+    btn.addEventListener("click", () => {
         // Empêcher l'envoie à 0
-        if (quantity.value > 0 && quantity.value <=100 && quantity.value != 0){
-
+        const quantity = parseInt(quantityElt.value)
+        if (quantity > 0 && quantity <=100){
             const product = {
                 id: article._id,
-                color : color.value,
-                quantity : quantity.value,
-            }
-
-        // Local Storage
-        let addToCart = JSON.parse(localStorage.getItem("product"));
-            if (addToCart) {
-                
+                color : colorElt.value,
+                quantity : quantity,
+            }      
+            // Local Storage
+            let cart = JSON.parse(localStorage.getItem("product")) || [];
             // Find id + color
-            const localStorageFind = addToCart.find((el) => el.id === article._id && el.color === color.value);
-                // Quantité addition local storage + input DOM
-                if (localStorageFind) {
-                    let newQuantity =
-                    parseInt(product.quantity) + parseInt(localStorageFind.quantity);
-                    localStorageFind.quantity = newQuantity;
-                    localStorage.setItem("product", JSON.stringify(addToCart));
-                } else {
-                    addToCart.push(product);
-                    localStorage.setItem("product", JSON.stringify(addToCart));
-                }
-
+            const localStorageFind = cart.find((el) => el.id === article._id && el.color === colorElt.value);
+            // Quantité addition local storage + input DOM
+            if (localStorageFind) {
+                localStorageFind.quantity += product.quantity;    
+            } else {
+                cart.push(product);
             }
-            else {
-            // Local Storage vide
-            addToCart =[];
-            addToCart.push(product);
-            localStorage.setItem("product", JSON.stringify(addToCart));
-            console.table(addToCart);
-            }
+            localStorage.setItem("product", JSON.stringify(cart));
         }
     });
 }
-
-
-
