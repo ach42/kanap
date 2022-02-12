@@ -40,6 +40,9 @@ function displayProduct(article){
 
 const quantityElt = document.getElementById('quantity');
 const colorElt = document.getElementById('colors');
+const confirmElt = document.getElementsByClassName('item__content');
+const confirmText = document.createElement('div');
+confirmElt[0].appendChild(confirmText);
 
 function addProduct(article) {
     const btn = document.querySelector("#addToCart");
@@ -63,6 +66,7 @@ function addProduct(article) {
                 cart.push(product);
             }
             localStorage.setItem("product", JSON.stringify(cart));
+            confirmText.innerHTML = `<p style="text-align:center;">${quantity} ${article.name} ${colorElt.value} ajouté au panier !<br><a href="cart.html" style="color: white;">Procéder au paiment</a></p>`;
         }
     });
 }
