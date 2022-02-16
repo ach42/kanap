@@ -66,7 +66,7 @@ function addProduct(article) {
                 cart.push(product);
             }
             localStorage.setItem("product", JSON.stringify(cart));
-            confirmText.innerHTML = `<p style="text-align:center;">${quantity} ${article.name} ${colorElt.value} ajouté au panier !<br><a href="cart.html" style="color: white;">Procéder au paiment</a></p>`;
+            confirmText.innerHTML = `<p style="text-align:center;">${quantity} ${article.name} ${colorElt.value} ajouté au panier !<br><a href="cart.html" style="color: white;">Procéder au paiement</a></p>`;
         }
     });
 }
