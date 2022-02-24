@@ -53,8 +53,34 @@ for (let cartElt of cart) {
       let productQuantity = document.createElement("p");
       productQuantity.textContent = "Qté : " + cartElt.quantity;
       settingsDivItemQuantity.appendChild(productQuantity);
-      let productQuantityInput = document.createElement("input", Number);
+      let productQuantityInput = document.createElement("input");
       productQuantityInput.className = "itemQuantity";
+      productQuantityInput.value = cartElt.quantity;
+      productQuantityInput.setAttribute("type", "number");
+      productQuantityInput.setAttribute("min", "1");
+      productQuantityInput.setAttribute("max", "100");
+      productQuantityInput.setAttribute("name", "itemQuantity");
       settingsDivItemQuantity.appendChild(productQuantityInput);
+      // div suppresion
+      let productDivDelete = document.createElement("div");
+      productDivDelete.className = "cart__item__content__settings__delete";
+      settingsDivItemContent.appendChild(productDivDelete);
+      let productTextDelete = document.createElement("p");
+      productTextDelete.className = "deleteItem";
+      productTextDelete.textContent = "Supprimer";
+      productDivDelete.appendChild(productTextDelete);
     }
+}
+
+total()
+
+function total() {
+const totalQuantityElt = document.getElementById("totalQuantity");
+const totalQuantity = JSON.parse(cart.length);
+totalQuantityElt.textContent = totalQuantity;
+console.log(totalQuantity)
+const totalPriceElt = document.getElementById("totalPrice");
+const totalPrice = cart.reduce((total, current) => total + current.price, 0)
+console.log(totalPrice)
+totalPriceElt.textContent = totalPrice;
 }
