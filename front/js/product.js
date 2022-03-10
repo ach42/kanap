@@ -54,7 +54,6 @@ function addProduct(article) {
                 id: article._id,
                 color : colorElt.value,
                 quantity : quantity,
-                price: article.price,
             }      
             // Local Storage
             let cart = JSON.parse(localStorage.getItem("product")) || [];
