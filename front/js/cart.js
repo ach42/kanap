@@ -12,10 +12,39 @@ Promise.all(promises).then(kanaps => {
     kanap.quantity = cart[i].quantity;
     displayProduct(kanap)
   })
-  console.log(kanaps)
+  total(kanaps)
+  changeEvents(kanaps)
+  deleteEvents(kanaps)
 })
 
+function total(kanaps) {
 
+  let totalQuantity = 0;
+  let totalPrice = 0;
+  for(let kanap of kanaps) {
+    totalQuantity += kanap.quantity;
+    totalPrice += kanap.price * kanap.quantity;
+  }
+
+  const totalQuantityElt = document.getElementById("totalQuantity");
+  totalQuantityElt.textContent = totalQuantity;
+
+  const totalPriceElt = document.getElementById("totalPrice");
+  totalPriceElt.textContent = totalPrice;
+}
+
+function changeEvents(kanaps) {
+  //
+}
+
+function deleteEvents(kanaps) {
+  const deleteElts = document.querySelectorAll(".deleteItem");
+  deleteElts.forEach(deleteElt => {
+    deleteElt.addEventListener("click", e => {
+      localStorage.removeItem("product"); 
+    })
+  });
+}
 function displayProduct(kanap) {
 
     const articleElt = document.createElement("article");
