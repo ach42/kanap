@@ -35,8 +35,9 @@ function deleteEvents(product) {
   const deleteElts = document.querySelectorAll(".deleteItem");
   deleteElts.forEach(deleteElt => {
     deleteElt.addEventListener("click", e => {
-      const filter = cart.filter(prod => prod.id === product._id);
+      const filter = cart.filter(prod => prod.id !== product._id);
       localStorage.setItem("product", JSON.stringify(filter))
+      location.reload()
     })
   })
 }
