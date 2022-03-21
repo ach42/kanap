@@ -1,31 +1,29 @@
+
 const url = "http://localhost:3000/api/products/"
 const promises = []
 const cart = JSON.parse(localStorage.getItem("product"));
-cart.forEach(kanap => {
-  const promise = fetch(url + kanap.id).then(res => res.json())
+cart.forEach(product => {
+  const promise = fetch(url + product.id).then(res => res.json())
   promises.push(promise)
  });
 
-Promise.all(promises).then(kanaps => {
-  kanaps.forEach((kanap, i) => {
-    kanap.colors = cart[i].color;
-    kanap.quantity = cart[i].quantity;
-    displayProduct(kanap)
+Promise.all(promises).then(products => {
+  products.forEach((product, i) => {
+    product.colors = cart[i].color;
+    product.quantity = cart[i].quantity;
+    displayProduct(product)
+    deleteEvents(product)
   })
-  total(kanaps)
-  changeEvents(kanaps)
-  deleteEvents(kanaps)
+  total(products)
 })
 
-function total(kanaps) {
-
+function total(products) {
   let totalQuantity = 0;
   let totalPrice = 0;
-  for(let kanap of kanaps) {
+  for(let kanap of products) {
     totalQuantity += kanap.quantity;
     totalPrice += kanap.price * kanap.quantity;
   }
-
   const totalQuantityElt = document.getElementById("totalQuantity");
   totalQuantityElt.textContent = totalQuantity;
 
@@ -33,19 +31,18 @@ function total(kanaps) {
   totalPriceElt.textContent = totalPrice;
 }
 
-function changeEvents(kanaps) {
-  //
-}
-
-function deleteEvents(kanaps) {
+function deleteEvents(product) {
   const deleteElts = document.querySelectorAll(".deleteItem");
   deleteElts.forEach(deleteElt => {
     deleteElt.addEventListener("click", e => {
-      localStorage.removeItem("product"); 
+      const filter = cart.filter(prod => prod.id === product._id);
+      localStorage.setItem("product", JSON.stringify(filter))
     })
-  });
+  })
 }
-function displayProduct(kanap) {
+
+
+function displayProduct(product) {
 
     const articleElt = document.createElement("article");
     document.querySelector("#cart__items").appendChild(articleElt);
@@ -105,18 +102,18 @@ function displayProduct(kanap) {
 
     // Dynamic
 
-    imgElt.src = kanap.imageUrl;
-    imgElt.alt = kanap.name;
+    imgElt.src = product.imageUrl;
+    imgElt.alt = product.name;
 
-    articleElt.setAttribute('data-id', kanap._id);
-    articleElt.setAttribute('data-color', kanap.colors);
+    articleElt.setAttribute('data-id', product._id);
+    articleElt.setAttribute('data-color', product.colors);
 
-    titleItem.textContent = kanap.name;
+    titleItem.textContent = product.name;
 
-    colorItem.textContent = kanap.colors;
+    colorItem.textContent = product.colors;
 
-    priceItem.textContent = kanap.price + "€";
+    priceItem.textContent = product.price + "€";
 
-    itemQuantity.textContent = "Qté : " + kanap.quantity;
-    itemQuantityInput.value = kanap.quantity;
+    itemQuantity.textContent = "Qté : " + product.quantity;
+    itemQuantityInput.value = product.quantity;
 }
