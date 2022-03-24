@@ -13,6 +13,7 @@ Promise.all(promises).then(products => {
     product.quantity = cart[i].quantity;
     displayProduct(product)
     deleteEvents(product)
+    modifyQtt(product)
   })
   total(products)
 })
@@ -42,6 +43,23 @@ function deleteEvents(product) {
   })
 }
 
+function modifyQtt() {
+  let modifyQttElts = document.querySelectorAll(".itemQuantity");
+
+  for (let i = 0; i < modifyQttElts.length; i++){
+      modifyQttElts[i].addEventListener("change" , (event) => {
+          event.preventDefault();
+          let quantityCart = cart[i].quantity;
+          let modifyQttEltValue = modifyQttElts[i].valueAsNumber;
+          const resultFind = cart.find((el) => el.modifyQttEltValue !== quantityCart);
+          resultFind.quantity = modifyQttEltValue;
+          cart[i].quantity = resultFind.quantity;
+          localStorage.setItem("product", JSON.stringify(cart));
+    
+          location.reload();
+      })
+  }
+}
 
 function displayProduct(product) {
 
