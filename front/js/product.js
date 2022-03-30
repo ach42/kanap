@@ -57,7 +57,7 @@ function addProduct(article) {
             }      
             // Local Storage
             let cart = JSON.parse(localStorage.getItem("product")) || [];
-            // Find id + color
+            
             const localStorageFind = cart.find((el) => el.id === article._id && el.color === colorElt.value);
             // Quantité addition local storage + input DOM
             if (localStorageFind) {

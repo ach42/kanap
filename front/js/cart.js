@@ -12,11 +12,12 @@ Promise.all(promises).then(products => {
     product.colors = cart[i].color;
     product.quantity = cart[i].quantity;
     displayProduct(product)
-    deleteEvents(product)
-    modifyQtt(product)
   })
   total(products)
+  deleteEvents(products)
+  modifyQtt()
 })
+form()
 
 function total(products) {
   let totalQuantity = 0;
@@ -32,11 +33,11 @@ function total(products) {
   totalPriceElt.textContent = totalPrice;
 }
 
-function deleteEvents(product) {
+function deleteEvents(products) {
   const deleteElts = document.querySelectorAll(".deleteItem");
-  deleteElts.forEach(deleteElt => {
-    deleteElt.addEventListener("click", e => {
-      const filter = cart.filter(prod => prod.id !== product._id);
+  deleteElts.forEach((deleteElt, i ) => {
+    deleteElt.addEventListener("click", event => {
+      const filter = cart.filter(prod => prod.id !== products[i]._id);
       localStorage.setItem("product", JSON.stringify(filter))
       location.reload()
     })
@@ -48,12 +49,7 @@ function modifyQtt() {
 
   for (let i = 0; i < modifyQttElts.length; i++){
       modifyQttElts[i].addEventListener("change" , (event) => {
-          event.preventDefault();
-          let quantityCart = cart[i].quantity;
-          let modifyQttEltValue = modifyQttElts[i].valueAsNumber;
-          const resultFind = cart.find((el) => el.modifyQttEltValue !== quantityCart);
-          resultFind.quantity = modifyQttEltValue;
-          cart[i].quantity = resultFind.quantity;
+          cart[i].quantity = modifyQttElts[i].valueAsNumber;
           localStorage.setItem("product", JSON.stringify(cart));
     
           location.reload();
@@ -136,3 +132,31 @@ function displayProduct(product) {
     itemQuantity.textContent = "Qté : " + product.quantity;
     itemQuantityInput.value = product.quantity;
 }
+
+
+function form() {
+  const formElt = document.querySelector(".cart__order__form");
+  formElt.addEventListener("submit", e => {
+  e.preventDefault()
+    let formEltFirstName = document.getElementById("firstName");
+    let formEltLastName = document.getElementById("lastName");
+    let formEltAddress = document.getElementById("address");
+    let formEltCity = document.getElementById("city");
+    let formEltMail = document.getElementById("email");
+    console.log(formEltMail, formEltFirstName, formEltLastName, formEltCity, formEltAddress);
+    const formValue = {
+        client: {
+          Nom: formEltLastName.value,
+          Prenom: formEltFirstName.value,
+          Adresse: formEltAddress.value,
+          City: formEltCity.value,
+          Email: formEltMail.value,
+      }
+    }
+    localStorage.setItem("order", JSON.stringify(formValue) + JSON.stringify(cart));
+    document.location.href = "confirmation.html";
+  })
+}
+
+
+
