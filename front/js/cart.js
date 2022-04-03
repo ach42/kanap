@@ -143,20 +143,31 @@ function form() {
     let formEltAddress = document.getElementById("address");
     let formEltCity = document.getElementById("city");
     let formEltMail = document.getElementById("email");
-    console.log(formEltMail, formEltFirstName, formEltLastName, formEltCity, formEltAddress);
-    const formValue = {
-        client: {
-          Nom: formEltLastName.value,
-          Prenom: formEltFirstName.value,
-          Adresse: formEltAddress.value,
-          City: formEltCity.value,
-          Email: formEltMail.value,
-      }
+
+    const contact = {
+          lastName: formEltLastName.value,
+          firstName: formEltFirstName.value,
+          address: formEltAddress.value,
+          city: formEltCity.value,
+          email: formEltMail.value,
     }
-    localStorage.setItem("order", JSON.stringify(formValue) + JSON.stringify(cart));
+    const products = [];
+
+    cart.forEach(product => {
+      for (let i = 0; i < product.quantity; i++) {
+        products.push(product.id)
+      }
+    })
+    const options = {
+      method: "POST",
+      body: JSON.stringify({contact, products}),
+      headers: {"Content-Type":"application/json"},
+    }
+    fetch(url + "order", options)
+    .then(res => res.json())
+    .then(order => {
+      localStorage.setItem("orderId", order.orderId)
+    })
     document.location.href = "confirmation.html";
   })
 }
-
-
-
